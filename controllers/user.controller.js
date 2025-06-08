@@ -26,4 +26,12 @@ export const fetchUsers = async (req, res) => {
     res.status(500).json({ error: 'Error fetching history', details: err.message });
   }
 };
+export const getMapApiKey = async (req, res) => {
+  try {
+    const api_url = 'AIzaSyA1TTUD5luKbZoBrDRdEOI-qEeF1ZL5XzI'
+    res.status(200).json({googleMapsApiKey: api_url});
+  } catch (err) {
+    res.status(500).json({ error: 'Error fetching history', details: err.message });
+  }
+};
 
