@@ -1,4 +1,4 @@
-import { createUser, getUser, loginUser } from '../services/user.service.js';
+import { createUser, getUser, loginUser, updateUserProfileService } from '../services/user.service.js';
 import { errorResponse, successResponse } from '../utils/response.util.js';
 
 export const createUserController = async (req, res) => {
@@ -35,3 +35,15 @@ export const getMapApiKey = async (req, res) => {
   }
 };
 
+export const updateUserProfile = async (req, res) => {
+  const userId = req.userId; // from middleware
+  const { name, age, gender, oldPassword, newPassword } = req.body;
+
+  try {
+    let userData = await updateUserProfileService(userId, name, age, gender, oldPassword, newPassword);
+    res.json({ message: 'Profile updated successfully' , userData , success:true});
+  } catch (error) {
+    console.error('❌ Error updating profile:', error.message);
+    res.status(400).json({ error: error.message });
+  }
+};

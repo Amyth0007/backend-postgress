@@ -3,7 +3,7 @@ import pool from './../config/db.config.js';
 export const getMessaLocation = async (body) => {
   try {
     const result = await pool.query(
-      `SELECT * FROM messlocation`
+      `SELECT * FROM messes`
     );
      const messLocations = result.rows.map(row => ({
       id: row.id,
