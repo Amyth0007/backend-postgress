@@ -8,7 +8,7 @@ const messLocations = [
     description: "Authentic home-style meals with pure ghee",
     distance: 0.8,
     rating: 4.5,
-    city: "pune",
+    city: "Pune",
     coordinates: { lat: 18.5204, lng: 73.8567 }
   },
   {
@@ -17,7 +17,7 @@ const messLocations = [
     description: "Healthy and nutritious vegetarian food",
     distance: 1.2,
     rating: 4.3,
-    city: "pune",
+    city: "Pune",
     coordinates: { lat: 18.5314, lng: 73.8446 }
   },
   {
@@ -26,7 +26,7 @@ const messLocations = [
     description: "Premium thalis with variety of items",
     distance: 1.5,
     rating: 4.7,
-    city: "pune",
+    city: "Pune",
     coordinates: { lat: 18.5123, lng: 73.8289 }
   },
     {
@@ -80,7 +80,7 @@ const messLocations = [
 const insertMessLocations = async () => {
   try {
     const insertQuery = `
-      INSERT INTO messlocation 
+      INSERT INTO messes 
       (name, city, description, ratings, distance, latitude, longitude)
       VALUES ($1, $2, $3, $4, $5, $6, $7)
     `;
