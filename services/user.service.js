@@ -80,6 +80,7 @@ export const loginUser = async (userData) => {
             id: user.id,
             name: user.name,
             email: user.email,
+            role: user.role
         },
         token
     };

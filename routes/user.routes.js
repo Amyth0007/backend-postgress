@@ -3,6 +3,7 @@ import {  createProduct, fetchProducts, testing} from '../controllers/prodcut.co
 import auth from '../middleware/auth.js';
 import { fetchUsers } from '../controllers/user.controller.js';
 import { getMessLocation } from '../controllers/messlocation.controller.js';
+import { createIntentsController, getUserIntentController} from '../controllers/intents.controller.js';
 
 const router = express.Router();
 
@@ -10,6 +11,8 @@ router.get('/fetch', auth, fetchProducts);
 router.get('/user', auth, fetchUsers);
 router.get('/messlocation',auth, getMessLocation);
 router.post('/save', createProduct);
+router.post('/save-intent',auth, createIntentsController);
+router.get('/get-intent',auth, getUserIntentController);
 router.get('/test',  testing);
 
 export default router;
