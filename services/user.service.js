@@ -12,7 +12,7 @@ const JWT_SECRET = process.env.JWT_SECRET || 'MS Dhoni the untold story';
 // Register User
 // ------------------------
 export const createUser = async (userData) => {
-    const { username, email, password } = userData;
+    const { username, email, password, role } = userData;
 
     if (!username || !email || !password) {
         const error = new Error('All fields are required');
@@ -31,8 +31,8 @@ export const createUser = async (userData) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const result = await pool.query(
-        `INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING id, name, email`,
-        [username, email, hashedPassword]
+        `INSERT INTO users (name, email, password, role) VALUES ($1, $2, $3, $4) RETURNING id, name, email, role`,
+        [username, email, hashedPassword, role]
     );
 
     const user = result.rows[0];
@@ -44,7 +44,8 @@ export const createUser = async (userData) => {
     return {
         message: 'User registered successfully',
         user,
-        token
+        token, 
+        role
     };
 };
 
