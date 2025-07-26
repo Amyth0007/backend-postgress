@@ -1,5 +1,5 @@
 import express from 'express';
-import {  createProduct, fetchProducts, testing} from '../controllers/prodcut.controller.js';
+import {  testing} from '../controllers/prodcut.controller.js';
 import auth from '../middleware/auth.js';
 import { fetchUsers } from '../controllers/user.controller.js';
 import { createMess, getMessLocation, isMessExist } from '../controllers/mess-config.controller.js';
