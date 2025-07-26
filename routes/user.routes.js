@@ -7,17 +7,13 @@ import { createIntentsController, getUserIntentController} from '../controllers/
 
 const router = express.Router();
 
-router.get('/fetch', auth, fetchProducts);
 router.get('/user', auth, fetchUsers);
 router.get('/messlocation',auth, getMessLocation);
 router.post('/mess/create', createMess);
 router.get('/mess/exist', isMessExist);
-router.post('/save', createProduct);
 router.post('/save-intent',auth, createIntentsController);
 router.get('/get-intent',auth, getUserIntentController);
 router.get('/test',  testing);
 
-//mess routes
-router.post('/add-mess', createProduct);
 
 export default router;
