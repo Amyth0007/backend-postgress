@@ -9,6 +9,7 @@ const createMessTable = async () => {
       description TEXT NOT NULL,
       type VARCHAR(100) NOT NULL,
       city VARCHAR(100) NOT NULL,
+      image VARCHAR(100) NOT NULL,
       latitude FLOAT NOT NULL,
       longitude FLOAT NOT NULL,
       user_id INT NOT NULL,

@@ -26,11 +26,11 @@ export const getMessaLocation = async (body) => {
 
 export const saveMess = async (body) => {
   try {
-    const { name, description, type, city, latitude, longitude, ownerId, address } = body;
+    const { name, description, type, city, latitude, longitude, ownerId, address, image } = body;
     const result = await pool.query(
-      `INSERT INTO mess (name, description, type, city, latitude, longitude, user_id, address) 
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
-      [name, description, type, city, latitude, longitude, ownerId, address]
+      `INSERT INTO mess (name, description, type, city, latitude, longitude, user_id, address, image) 
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`,
+      [name, description, type, city, latitude, longitude, ownerId, address, image]
     );
     return result.rows[0];
   } catch (err) {
