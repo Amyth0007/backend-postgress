@@ -32,7 +32,7 @@ export const createIntents = async (orderData) => {
 
     await client.query('COMMIT');
 
-    return { success: true, orderId };
+    return { success: true, intentId };
   } catch (error) {
     await client.query('ROLLBACK');
     throw error;
