@@ -3,7 +3,7 @@ import pool from '../config/db.config.js';
 export const getMessaLocation = async (body) => {
   try {
     const result = await pool.query(
-      `SELECT * FROM messes`
+      `SELECT * FROM mess`
     );
      const messLocations = result.rows.map(row => ({
       id: row.id,
@@ -26,11 +26,11 @@ export const getMessaLocation = async (body) => {
 
 export const saveMess = async (body) => {
   try {
-    const { name, description, type, city, latitude, longitude, ownerId, address, image } = body;
+    const { name, description, type, ratings, city, latitude, longitude, ownerId, address, image } = body;
     const result = await pool.query(
-      `INSERT INTO mess (name, description, type, city, latitude, longitude, user_id, address, image) 
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`,
-      [name, description, type, city, latitude, longitude, ownerId, address, image]
+      `INSERT INTO mess (name, description, type,ratings, city, latitude, longitude, user_id, address, image) 
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *`,
+      [name, description, type,3, city, latitude, longitude, ownerId, address, image]
     );
     return result.rows[0];
   } catch (err) {
