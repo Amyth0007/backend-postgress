@@ -50,4 +50,33 @@ export const isMessExistForUser = async (userId) => {
   }
 }
 
+export const getMessData = async (userId)=>{
+  try {
+    const result = await pool.query(
+      `SELECT * FROM mess WHERE user_id = $1`,
+      [userId]
+    );
+    return result.rows[0];
+  } catch (error) {
+    console.error('Error fetching user:', error.message);
+    throw new Error('Error fetching user data');
+  }
+}
+
+export const updatemessProfile = async ( userId, name, discription, type, city, address , image) => {
+  try {
+
+    const userData = await pool.query(
+      `UPDATE mess SET name = $1, description = $2, type = $3,city = $4, address= $5, image=$6
+             WHERE user_id = $7 RETURNING *`,
+      [name, discription, type, city, address, image, userId]
+    );
+
+    return userData.rows[0];
+  } catch (error) {
+     console.error('Error fetching user:', error.message);
+    throw new Error('Error fetching user data');
+    
+  }
+}
 

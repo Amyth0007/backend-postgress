@@ -1,4 +1,4 @@
-import { getMessaLocation, isMessExistForUser, saveMess } from '../services/messConfig.service.js';
+import { getMessaLocation, isMessExistForUser, saveMess,  getMessData, updatemessProfile } from '../services/messConfig.service.js';
 
 
 export const getMessLocation = async (req, res) => {
@@ -16,6 +16,26 @@ export const createMess = async (req, res)=>{
     res.status(201).json({ message: 'Mess created successfully' });
   } catch (error) {
     
+  }
+}
+export const getMessDetail = async (req, res) => {
+  try {
+    const data = await getMessData(req.userId);
+    res.status(200).json(data);
+  } catch (error) {
+    console.error('Error fetching user:', error.message);
+    throw new Error('Error fetching user data');
+  }
+}
+
+export const updateMessDetails = async (req, res)=>{
+  try {
+  const userId = req.userId; // from middleware
+  const { name, description, type, city, adress , image} = req.body;
+  const data = await updatemessProfile(userId, name, description, type, city, adress , image )
+  res.json({ message: 'Profile updated successfully' , data , success:true});
+  } catch (error) {
+    console.log(error)
   }
 }
 
