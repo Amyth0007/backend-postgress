@@ -4,6 +4,7 @@ import cors from 'cors';
 // import connectDB from './config/db.config.js';
 import userRoutes from './routes/user.routes.js';
 import authRoutes from './routes/auth.routes.js';
+import thaliRoutes from './routes/thalis.routes.js';
 // import pool from './config/db.config.js'
 dotenv.config();
 
@@ -19,6 +20,7 @@ app.use(express.json());
 
 app.use('/api/auth', authRoutes);
 app.use('/api/', userRoutes);
+app.use('/api/', thaliRoutes);
 
 
 

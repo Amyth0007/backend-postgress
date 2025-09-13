@@ -67,9 +67,9 @@ export const updatemessProfile = async ( userId, name, discription, type, city, 
   try {
 
     const userData = await pool.query(
-      `UPDATE mess SET name = $1, description = $2, type = $3,city = $4, address= $5, image=$6
-             WHERE user_id = $7 RETURNING *`,
-      [name, discription, type, city, address, image, userId]
+      `UPDATE mess SET name = $1, description = $2, type = $3,city = $4, address= $5
+             WHERE user_id = $6 RETURNING *`,
+      [name, discription, type, city, address, userId]
     );
 
     return userData.rows[0];
