@@ -1,4 +1,4 @@
-import { addThali, updateThali, deleteThali, getThalis, publishThali } from '../services/thalis.service.js';
+import { addThali, updateThali, deleteThali, getThalis, publishThali, getMessSpecificThali } from '../services/thalis.service.js';
 export const addThaliController = async (req, res) => {
   try {
     const thaliData = req.body;
@@ -14,7 +14,7 @@ export const addThaliController = async (req, res) => {
   } catch (error) {
     console.error('Error adding thali:', error);
     res.status(500).json({ message: 'Error adding thali', error: error.message });
-  }
+  } 
 };
 
 export const updateThaliController = async (req, res) => {
@@ -53,6 +53,21 @@ export const getThalisController = async (req, res) => {
     const { messId, type, date } = req.query;
 
     const thalis = await getThalis(messId, type, date);
+
+    res.status(200).json({
+      message: 'Thalis fetched successfully',
+      data: thalis
+    });
+  } catch (error) {
+    console.error('Error fetching thalis:', error);
+    res.status(500).json({ message: 'Error fetching thalis', error: error.message });
+  }
+};
+export const getMessSpecificThalis = async (req, res) => {
+  try {
+    const { messId, type, date } = req.query;
+
+    const thalis = await getMessSpecificThali(messId, type, date);
 
     res.status(200).json({
       message: 'Thalis fetched successfully',

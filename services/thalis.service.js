@@ -307,6 +307,41 @@ export const getThalis = async (messId, type) => {
     throw error;
   }
 };
+export const getMessSpecificThali = async (messId, type) => {
+  try {
+   const result = await pool.query("SELECT * FROM thalis WHERE mess_id = $1 AND available_date = CURRENT_DATE", [messId]);
+  const thalis = result.rows.map(mapThaliToFrontend);
+
+    return thalis;
+
+  } catch (error) {
+    console.error('Error fetching thalis:', error);
+    throw error;
+  }
+};
+function mapThaliToFrontend(thali) {
+  const items = [];
+
+  if (thali.rotis) items.push(`${thali.rotis} rotis`);
+  if (thali.sabzi) items.push(`sabzi: ${thali.sabzi}`);
+  if (thali.daal === "true") items.push("daal");
+  if (thali.rice === "true") items.push("rice");
+  if (thali.salad === "true") items.push("salad");
+  if (thali.sweet === "true") {
+    items.push(`sweet: ${thali.sweet_info || "included"}`);
+  }
+  if (thali.other_items) items.push(`other items: ${thali.other_items}`);
+
+  return {
+    id: thali.id,
+    name: thali.thali_name,
+    description: `Includes ${items.join(", ")}.`,
+    price: parseFloat(thali.price),
+    imageUrl: thali.image,
+    isVegetarian: true, // hardcoded for now
+    spicyLevel: 2       // hardcoded
+  };
+}
 
 export const publishThali = async (thaliId, published) => {
   const client = await pool.connect();
