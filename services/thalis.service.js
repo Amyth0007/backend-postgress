@@ -307,9 +307,22 @@ export const getThalis = async (messId, type) => {
     throw error;
   }
 };
+
+export function getTodayDate() {
+  const today = new Date();
+  const yyyy = today.getFullYear();
+  const mm = String(today.getMonth() + 1).padStart(2, '0'); // months are 0-based
+  const dd = String(today.getDate()).padStart(2, '0');
+  return `${yyyy}-${mm}-${dd}`;
+}
 export const getMessSpecificThali = async (messId, type) => {
   try {
-   const result = await pool.query("SELECT * FROM thalis WHERE mess_id = $1 AND available_date = CURRENT_DATE", [messId]);
+  //  const result = await pool.query("SELECT * FROM thalis WHERE mess_id = $1 AND available_date = (NOW() AT TIME ZONE 'Asia/Kolkata');", [messId]);
+  const today = getTodayDate()
+  const result = await pool.query(
+  "SELECT * FROM thalis WHERE mess_id = $1 AND available_date = $2",
+  [messId, today]
+);
   const thalis = result.rows.map(mapThaliToFrontend);
 
     return thalis;
