@@ -1,4 +1,5 @@
-import { createIntents, getIntentsByUserId } from '../services/intents.service.js';
+import { createIntents, getIntentsByMessId, getIntentsByUserId } from '../services/intents.service.js';
+import { getMessIdByUserId } from '../services/thalis.service.js';
 
 export const createIntentsController = async (req, res) => {
   try {
@@ -34,6 +35,27 @@ export const getUserIntentController = async (req, res) => {
   } catch (error) {
     console.error('Error fetching Intents:', error);
     res.status(500).json({ message: 'Error fetching Intents', error: error.message });
+  }
+};
+
+export const getMessIntentsController = async (req, res) => {
+  try {
+    const userid = req.userId;
+    const messId = await getMessIdByUserId(userid);
+
+    if (!messId) {
+      return res.status(400).json({ message: 'Mess ID is required' });
+    }
+
+    const intents = await getIntentsByMessId(messId);
+
+    res.status(200).json({
+      message: 'Mess intents fetched successfully',
+      data: intents
+    });
+  } catch (error) {
+    console.error('Error fetching mess intents:', error);
+    res.status(500).json({ message: 'Error fetching mess intents', error: error.message });
   }
 };
 

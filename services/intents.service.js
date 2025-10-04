@@ -1,4 +1,4 @@
-import pool from './../config/db.config.js'
+import pool from './../config/db.config.js';
 
 export const createIntents = async (orderData) => {
   const client = await pool.connect();
@@ -47,7 +47,7 @@ export const getIntentsByUserId = async (userId) => {
     const intentsResult = await pool.query(`
       SELECT o.id AS order_id, o.mess_id, m.name AS mess_name, o.head_count, o.total_amount, o.order_time
       FROM intents o
-      JOIN messes m ON o.mess_id = m.id
+      JOIN mess m ON o.mess_id = m.id
       WHERE o.user_id = $1
       ORDER BY o.order_time DESC
     `, [userId]);
@@ -92,6 +92,62 @@ export const getIntentsByUserId = async (userId) => {
 
   } catch (error) {
     console.error('Error fetching user Intents:', error);
+    throw error;
+  }
+};
+
+export const getIntentsByMessId = async (messId) => {
+  try {
+    // Fetch all orders for a specific mess along with user details
+    const intentsResult = await pool.query(`
+      SELECT o.id AS order_id, o.mess_id, o.user_id, u.name AS user_name, 
+             o.head_count, o.total_amount, o.order_time
+      FROM intents o
+      JOIN users u ON o.user_id = u.id
+      WHERE o.mess_id = $1
+      ORDER BY o.order_time DESC
+    `, [messId]);
+
+    const intents = intentsResult.rows;
+    if (intents.length === 0) return [];
+
+    // Fetch all items for all orders in one go
+    const intentsIds = intents.map(intent => intent.order_id);
+
+    const itemsResult = await pool.query(`
+      SELECT order_id, item_name AS "itemName", quantity, price_per_unit AS "pricePerUnit"
+      FROM order_items
+      WHERE order_id = ANY($1)
+    `, [intentsIds]);
+
+    const itemsByIntents = {};
+    for (const item of itemsResult.rows) {
+      if (!itemsByIntents[item.order_id]) {
+        itemsByIntents[item.order_id] = [];
+      }
+      itemsByIntents[item.order_id].push({
+        itemName: item.itemName,
+        quantity: item.quantity,
+        pricePerUnit: item.pricePerUnit
+      });
+    }
+
+    // Build final response
+    const finalIntents = intents.map(intent => ({
+      orderId: intent.order_id,
+      messId: intent.mess_id,
+      userId: intent.user_id,
+      userName: intent.user_name,
+      headCount: intent.head_count,
+      totalAmount: intent.total_amount,
+      timestamp: intent.order_time,
+      selectedItems: itemsByIntents[intent.order_id] || []
+    }));
+
+    return finalIntents;
+
+  } catch (error) {
+    console.error('Error fetching intents by mess ID:', error);
     throw error;
   }
 };
