@@ -87,6 +87,7 @@ export const addThali = async (thaliData, userId) => {
 
     return { success: true, thaliId };
   } catch (error) {
+    console.log(error.message);
     await client.query('ROLLBACK');
     throw error;
   } finally {
@@ -98,7 +99,7 @@ export const getMessIdByUserId = async (userId) => {
   const client = await pool.connect();
   try {
     const result = await client.query('SELECT id FROM mess WHERE user_id = $1', [userId]);
-    console.log(result.rows[0].id);
+    
     return result.rows[0].id;
   }
   catch (error) {
