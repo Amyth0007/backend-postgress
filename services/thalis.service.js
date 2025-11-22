@@ -321,8 +321,8 @@ export const getMessSpecificThali = async (messId, type) => {
   //  const result = await pool.query("SELECT * FROM thalis WHERE mess_id = $1 AND available_date = (NOW() AT TIME ZONE 'Asia/Kolkata');", [messId]);
   const today = getTodayDate()
   const result = await pool.query(
-  "SELECT * FROM thalis WHERE mess_id = $1 AND available_date = $2",
-  [messId, today]
+  "SELECT * FROM thalis WHERE mess_id = $1 AND available_date = $2 AND published = $3",
+  [messId, today, true]
 );
   const thalis = result.rows.map(mapThaliToFrontend);
 
