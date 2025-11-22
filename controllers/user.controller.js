@@ -12,7 +12,7 @@ export const createUserController = async (req, res) => {
 export const loginController = async (req, res) => {
     try {
         const user = await loginUser(req.body);
-        return successResponse(res, 'User created successfully', user);
+        return successResponse(res, 'User logged in successfully', user);
     } catch (err) {
         return errorResponse(res, err.message);
     }
